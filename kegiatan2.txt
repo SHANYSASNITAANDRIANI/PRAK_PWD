@@ -1,0 +1,96 @@
+
+Setting environment for using XAMPP for Windows.
+ANDRI@LAPTOP-P68U10SL c:\xampp
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.19-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database akademic;
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| akademic           |
+| db_perusahaan      |
+| information_schema |
+| mysql              |
+| performance_schema |
+| perusahaan         |
+| phpmyadmin         |
+| projek             |
+| projek_perusahaan  |
+| proyek_pwd         |
+| test               |
+| thesis             |
++--------------------+
+12 rows in set (0.020 sec)
+
+MariaDB [(none)]> use akademic;
+Database changed
+MariaDB [akademic]> create table mahasiswa (
+    -> nim varchar (5),
+    -> nama varchar (50),
+    -> jkel varchar (1),
+    -> alamat text,
+    -> tgllhr date,
+    -> primary key (nim));
+Query OK, 0 rows affected (0.073 sec)
+
+MariaDB [akademic]> show tables;
++--------------------+
+| Tables_in_akademic |
++--------------------+
+| mahasiswa          |
++--------------------+
+1 row in set (0.001 sec)
+
+MariaDB [akademic]> insert into mahasiswa values('mhs01','siti aminah','p','solo','1995-10-01');
+Query OK, 1 row affected (0.104 sec)
+
+MariaDB [akademic]> insert into mahasiswa values('mhs02','rita','p','solo','1999-01-01');
+Query OK, 1 row affected (0.016 sec)
+
+MariaDB [akademic]> insert into mahasiswa values('mhs03','amirudin','l','semarang','1998-09-11');
+Query OK, 1 row affected (0.051 sec)
+
+MariaDB [akademic]> insert into mahasiswa values('mhs04','siti maryam','p','jakarta','1995-04-15');
+Query OK, 1 row affected (0.024 sec)
+
+MariaDB [akademic]> select * from mahasiswa;
++-------+-------------+------+----------+------------+
+| nim   | nama        | jkel | alamat   | tgllhr     |
++-------+-------------+------+----------+------------+
+| mhs01 | siti aminah | p    | solo     | 1995-10-01 |
+| mhs02 | rita        | p    | solo     | 1999-01-01 |
+| mhs03 | amirudin    | l    | semarang | 1998-09-11 |
+| mhs04 | siti maryam | p    | jakarta  | 1995-04-15 |
++-------+-------------+------+----------+------------+
+4 rows in set (0.001 sec)
+
+MariaDB [akademic]> select * from mahasiswa where alamat=solo;
+ERROR 1054 (42S22): Unknown column 'solo' in 'where clause'
+MariaDB [akademic]> select * from mahasiswa
+    -> where alamat=solo;
+ERROR 1054 (42S22): Unknown column 'solo' in 'where clause'
+MariaDB [akademic]> select * from mahasiswa
+    -> where alamat = solo;
+ERROR 1054 (42S22): Unknown column 'solo' in 'where clause'
+MariaDB [akademic]> select * from mahasiswa
+    -> where alamat = 'solo';
++-------+-------------+------+--------+------------+
+| nim   | nama        | jkel | alamat | tgllhr     |
++-------+-------------+------+--------+------------+
+| mhs01 | siti aminah | p    | solo   | 1995-10-01 |
+| mhs02 | rita        | p    | solo   | 1999-01-01 |
++-------+-------------+------+--------+------------+
+2 rows in set (0.000 sec)
+
+MariaDB [akademic]>
