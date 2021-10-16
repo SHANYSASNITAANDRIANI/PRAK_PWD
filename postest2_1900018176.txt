@@ -1,0 +1,143 @@
+
+Setting environment for using XAMPP for Windows.
+ANDRI@LAPTOP-P68U10SL c:\xampp
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9
+Server version: 10.4.19-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use akademic;
+Database changed
+MariaDB [akademic]> select * from mahasiswa;
++-------+-------------+------+----------+------------+---------+
+| nim   | nama        | jkel | alamat   | tgllhr     | jurusan |
++-------+-------------+------+----------+------------+---------+
+| mhs01 | siti aminah | p    | solo     | 1995-10-01 | NULL    |
+| mhs02 | rita        | p    | solo     | 1999-01-01 | NULL    |
+| mhs03 | amirudin    | l    | semarang | 1998-09-11 | NULL    |
+| mhs04 | siti maryam | p    | jakarta  | 1995-04-15 | NULL    |
++-------+-------------+------+----------+------------+---------+
+4 rows in set (0.000 sec)
+
+MariaDB [akademic]> Update mahasiswa set jurusan='pgsd' where kode='mhs01';
+ERROR 1054 (42S22): Unknown column 'kode' in 'where clause'
+MariaDB [akademic]> Update mahasiswa set jurusan='pgsd' where nim='mhs01';
+Query OK, 1 row affected (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [akademic]> Update mahasiswa set jurusan='teknik informatika' where nim='mhs02';
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [akademic]> Update mahasiswa set jurusan='managemen' where nim='mhs03';
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [akademic]> Update mahasiswa set jurusan='managemen' where nim='mhs04';
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [akademic]> insert into mahasiswa values('mhs05','aulia','p','solo','2000-11-27');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+MariaDB [akademic]> insert into mahasiswa values('mhs05','aulia','p','solo','2000-11-27','pgsd');
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [akademic]> insert into mahasiswa values('mhs05','nisa','p','jakarta','2002-04-09','teknik informatika');
+ERROR 1062 (23000): Duplicate entry 'mhs05' for key 'PRIMARY'
+MariaDB [akademic]> insert into mahasiswa values('mhs06','nisa','p','jakarta','2002-04-09','teknik informatika');
+Query OK, 1 row affected (0.017 sec)
+
+MariaDB [akademic]> insert into mahasiswa values('mhs07','adit','l','bandung','2003-08-17','teknik informatika');
+Query OK, 1 row affected (0.013 sec)
+
+MariaDB [akademic]> select * from mahasiswa;
++-------+-------------+------+----------+------------+--------------------+
+| nim   | nama        | jkel | alamat   | tgllhr     | jurusan            |
++-------+-------------+------+----------+------------+--------------------+
+| mhs01 | siti aminah | p    | solo     | 1995-10-01 | pgsd               |
+| mhs02 | rita        | p    | solo     | 1999-01-01 | teknik informatika |
+| mhs03 | amirudin    | l    | semarang | 1998-09-11 | managemen          |
+| mhs04 | siti maryam | p    | jakarta  | 1995-04-15 | managemen          |
+| mhs05 | aulia       | p    | solo     | 2000-11-27 | pgsd               |
+| mhs06 | nisa        | p    | jakarta  | 2002-04-09 | teknik informatika |
+| mhs07 | adit        | l    | bandung  | 2003-08-17 | teknik informatika |
++-------+-------------+------+----------+------------+--------------------+
+7 rows in set (0.000 sec)
+
+MariaDB [akademic]> select * from mahasiswa
+    -> where alamat = 'jakarta';
++-------+-------------+------+---------+------------+--------------------+
+| nim   | nama        | jkel | alamat  | tgllhr     | jurusan            |
++-------+-------------+------+---------+------------+--------------------+
+| mhs04 | siti maryam | p    | jakarta | 1995-04-15 | managemen          |
+| mhs06 | nisa        | p    | jakarta | 2002-04-09 | teknik informatika |
++-------+-------------+------+---------+------------+--------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [akademic]> select * from mahasiswa
+    -> where alamat = 'bandung';
++-------+------+------+---------+------------+--------------------+
+| nim   | nama | jkel | alamat  | tgllhr     | jurusan            |
++-------+------+------+---------+------------+--------------------+
+| mhs07 | adit | l    | bandung | 2003-08-17 | teknik informatika |
++-------+------+------+---------+------------+--------------------+
+1 row in set (0.000 sec)
+
+MariaDB [akademic]> select * from mahasiswa
+    -> where alamat = 'semarang';
++-------+----------+------+----------+------------+-----------+
+| nim   | nama     | jkel | alamat   | tgllhr     | jurusan   |
++-------+----------+------+----------+------------+-----------+
+| mhs03 | amirudin | l    | semarang | 1998-09-11 | managemen |
++-------+----------+------+----------+------------+-----------+
+1 row in set (0.000 sec)
+
+MariaDB [akademic]> select * from mahasiswa
+    -> where jurusan = 'managemen';
++-------+-------------+------+----------+------------+-----------+
+| nim   | nama        | jkel | alamat   | tgllhr     | jurusan   |
++-------+-------------+------+----------+------------+-----------+
+| mhs03 | amirudin    | l    | semarang | 1998-09-11 | managemen |
+| mhs04 | siti maryam | p    | jakarta  | 1995-04-15 | managemen |
++-------+-------------+------+----------+------------+-----------+
+2 rows in set (0.000 sec)
+
+MariaDB [akademic]> select * from mahasiswa
+    -> where jurusan = 'pgsd';
++-------+-------------+------+--------+------------+---------+
+| nim   | nama        | jkel | alamat | tgllhr     | jurusan |
++-------+-------------+------+--------+------------+---------+
+| mhs01 | siti aminah | p    | solo   | 1995-10-01 | pgsd    |
+| mhs05 | aulia       | p    | solo   | 2000-11-27 | pgsd    |
++-------+-------------+------+--------+------------+---------+
+2 rows in set (0.000 sec)
+
+MariaDB [akademic]> select * from mahasiswa
+    -> where jkel = 'p';
++-------+-------------+------+---------+------------+--------------------+
+| nim   | nama        | jkel | alamat  | tgllhr     | jurusan            |
++-------+-------------+------+---------+------------+--------------------+
+| mhs01 | siti aminah | p    | solo    | 1995-10-01 | pgsd               |
+| mhs02 | rita        | p    | solo    | 1999-01-01 | teknik informatika |
+| mhs04 | siti maryam | p    | jakarta | 1995-04-15 | managemen          |
+| mhs05 | aulia       | p    | solo    | 2000-11-27 | pgsd               |
+| mhs06 | nisa        | p    | jakarta | 2002-04-09 | teknik informatika |
++-------+-------------+------+---------+------------+--------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [akademic]> select * from mahasiswa
+    -> where jkel = 'l';
++-------+----------+------+----------+------------+--------------------+
+| nim   | nama     | jkel | alamat   | tgllhr     | jurusan            |
++-------+----------+------+----------+------------+--------------------+
+| mhs03 | amirudin | l    | semarang | 1998-09-11 | managemen          |
+| mhs07 | adit     | l    | bandung  | 2003-08-17 | teknik informatika |
++-------+----------+------+----------+------------+--------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [akademic]>
