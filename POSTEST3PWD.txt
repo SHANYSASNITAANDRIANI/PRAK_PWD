@@ -1,0 +1,183 @@
+Nama : SHANY SASNITA ANDRIANI
+Nim : 1900018176
+Kelas : B
+Slot kamis 15.00
+POSTEST 3
+
+KONEKSI.PHP
+<?php
+$host="localhost"; // parameter localhost yang ada di laptop/komputer kita
+$username="root"; // parameter user untuk login
+$password=""; // parameter password untuk login (kalau ada)
+$databasename="akademic"; // parameter untuk nama database yang dibuat
+$con=@mysqli_connect($host,$username,$password,$databasename); //  variable $con untuk membuat database terhubung dengan fungsi mysqli_connect kita serta memasukkan beberapa variable yang sudah di insialisasikan sebelumnya.
+if (!$con) { // kondisi untuk mengecek apakah database sudah terhubung atau tidak
+ echo "Error: " . mysqli_connect_error(); // jika salah/ tidak terhubung akan muncul “Error beserta alasan erornya”
+exit(); // menutup proses 
+}
+?>
+
+
+INDEX.PHP
+<?php
+include_once("koneksi.php"); // untuk menghubungkan halaman ke database
+// Fetch all users data from database
+$result = mysqli_query($con, "SELECT * FROM mahasiswa "); // untuk menerima dan mendata yang diinputkan ke database dan ditampung pada table mahasiswa
+?>
+<html>
+<head> // menjadi judul dari halaman web yang di buat
+ <title>Halaman Utama</title> // judul yang tampil di tab browser
+</head>
+<body>
+<a href="tambah.php">Tambah Data Baru</a><br/><br/> // menghubungkan tambah.php (halaman menambahkan data) dengan mengklik tulsian “Tambah data baru”
+ <table width='80%' border=1> // membuat sebuah table dengan beberapa atribut yang diinginkan
+ <tr> // digunakan untuk medefinisikan sebuah baris pada tabel
+ <th>Nim</th> <th>Nama</th> <th>Gender</th> <th>Alamat</th> 
+ <th>tgl lahir</th> <th>Update</th> // digunakan untuk membuat isi dari baris pada tabel
+ </tr>
+<?php 
+while($user_data = mysqli_fetch_array($result)) { //pengkondsian untuk menampilkan hasil dari data yang dimasukkan
+ echo "<tr>";
+ echo "<td>".$user_data['nim']."</td>"; // variable $user_data menerima data yang masuk dari kolom nim dan seterusnya
+ echo "<td>".$user_data['nama']."</td>";
+ echo "<td>".$user_data['jkel']."</td>";
+ echo "<td>".$user_data['alamat']."</td>"; 
+ echo "<td>".$user_data['tgllhr']."</td>"; 
+ echo "<td><a href='edit.php?nim=$user_data[nim]'>Edit</a> | <a 
+href='delete.php?nim=$user_data[nim]'>Delete</a></td></tr>"; // menghubungkan edit.php untuk mengedit(tulisan edit) data dan delete.php untuk menghapus data(tulisan delete) 
+}
+?>
+</table>
+</body>
+</html>
+
+
+Tambah.php
+<html>
+<head> // judul dari web kita buat
+ <title>Tambah data mahasiswa</title> // judul yang tampil di tab browser
+</head>
+<body> //  isi dari web yang kita buat
+ <a href="index.php">Go to Home</a> // menghubungkan index.php (halaman utama) dengan mengklik tulsian “Go to Home”
+ <br/><br/> // memberikan jarak 2 enter
+ <form action="tambah.php" method="post" name="form1"> // membuat sebuah form dengan action tambah.php dilengkapi metode post serta diberi nama form1
+ <table width="25%" border="0"> // membuat sebuah table dengan beberapa atribut yang diinginkan
+ <tr> // digunakan untuk medefinisikan sebuah baris pada tabel
+ <td>Nim</td> // digunakan untuk membuat isi(nim) dari baris pada tabel
+ <td><input type="text" name="nim"></td> // mendefinisikan tipe dari data yang diisikan yaitu sebuah text dengan penamaan nim 
+ </tr>
+ <tr> 
+ <td>Nama</td> // digunakan untuk membuat isi(nama) dari baris pada tabel
+ <td><input type="text" name="nama"></td> // mendefinisikan tipe dari data yang diisikan yaitu sebuah text dengan penamaan nama
+ </tr>
+ <tr> 
+ <td>Gender (L/P)</td> // digunakan untuk membuat isi(Gender) dari baris pada tabel
+ <td><input type="text" name="jkel"></td> // mendefinisikan tipe dari data yang diisikan yaitu sebuah text dengan penamaan jkel
+ </tr>
+ <tr> 
+ <td>Alamat</td> // digunakan untuk membuat isi(Alamat) dari baris pada tabel
+ <td><input type="text" name="alamat"></td> // mendefinisikan tipe dari data yang diisikan yaitu sebuah text dengan penamaan alamat
+ </tr>
+ <tr> 
+ <td>Tgl Lahir</td> // digunakan untuk membuat isi(tgl lahir) dari baris pada tabel
+ <td><input type="text" name="tgllhr"></td> // mendefinisikan tipe dari data yang diisikan yaitu sebuah text dengan penamaan tgllhr
+ </tr>
+ <tr> 
+ <td></td>
+ <td><input type="submit" name="Submit" value="Tambah"></td> // digunakan untuk menunjukkan masukkan bisa berupa kotak dengan fungsi submit untuk memasukkan data yang telah kita inputkan diatas
+ </tr>
+ </table>
+ </form>
+<?php
+ if(isset($_POST['Submit'])) { //melakukan pengecekan terkait data yang kita masukkan dengan fungsi isset() pada tombol submit
+ $nim = $_POST['nim']; // untuk memanggil data yang sudah diinputkan pada kolom nim
+ $nama = $_POST['nama']; // untuk memanggil data yang sudah diinputkan pada kolom nama
+ $jkel = $_POST['jkel']; // untuk memanggil data yang sudah diinputkan pada kolom jkel
+ $alamat = $_POST['alamat']; // untuk memanggil data yang sudah diinputkan pada kolom alamat
+ $tgllhr = $_POST['tgllhr']; // untuk memanggil data yang sudah diinputkan pada kolom tgllhr
+ include_once("koneksi.php"); // untuk melihat dan mengecek  file/data yang ada pada database hanya dalam sekali eksekusi
+ $result = mysqli_query($con, "INSERT INTOmahasiswa(nim,nama,jkel,alamat,tgllhr)
+VALUES('$nim','$nama', '$jkel','$alamat','$tgllhr')"); // mengisikan data yang telah diinputkan ke dalam table mahasiswa pada kolom-kolom yang tersedia
+ // Show message when user added
+  echo "Data berhasil disimpan. <a href='index.php'>View Users</a>";
+ } // menampilkan kata “data berhasil disimpan” bila proses sukses dan view user digunakan untuk menghubungkan Kembali ke halam index.php
+ ?>
+ </body>
+ </html>
+
+
+Edit.php
+<?php
+include_once("koneksi.php"); // digunakan untuk menghubungkan halaman ke database
+if(isset($_POST['update'])) // pengkondisian untuk mengecek apakah form yang di submit sudah terupdate pada tampilan utama 
+{ 
+ $nim = $_POST['nim']; // digunakan untuk memanggil data yang sudah diinputkan pada kolom nim dan seterusnya
+ $nama=$_POST['nama'];
+ $jkel=$_POST['jkel'];
+ $alamat=$_POST['alamat'];
+ $tgllhr=$_POST['tgllhr'];
+$result = mysqli_query($con, "UPDATE mahasiswa SET 
+nama='$nama',jkel='$jkel',alamat='$alamat',tgllhr='$tgllhr' WHERE nim='$nim'"); // digunakan untuk mengupdate data ke database
+header("Location: index.php"); // menghubungkan langsung ke halaman index.php
+}
+?>
+<?php
+$nim = $_GET['nim']; //menampilkan data berdasarkan nim yang dipilih
+$result = mysqli_query($con, "SELECT * FROM mahasiswa WHERE nim='$nim'"); //menampilkan data berdasarkan nim yang dipilih dari table mahasiswa
+while($user_data = mysqli_fetch_array($result))
+{
+$nim = $user_data['nim'];
+$nama = $user_data['nama'];
+$jkel = $user_data['jkel'];
+$alamat = $user_data['alamat'];
+$tgllhr = $user_data['tgllhr'];
+} // data yang akan ditampilkan sebelum di update
+?>
+<html>
+<head>
+<title>Edit Data Mahasiswa</title>
+</head>
+<body>
+ <a href="index.php">Home</a> //digunakan untuk menghubungkan ke halaman index.php(halaman utama)
+ <br/><br/>
+<form name="update_mahasiswa" method="post" action="edit.php"> // membuat sebuah form dengan action edit.php dilengkapi metode post serta diberi nama update_mahasiswa
+<table border="0"> // border table yang digunakan 0
+<tr> // digunakan untuk medefinisikan sebuah baris pada tabel
+<td>Nama</td> // digunakan untuk membuat isi(namat) dari baris pada table dan seterusnya 
+<td><input type="text" name="nama" value=<?php echo $nama;?>></td> // mendefinisikan tipe dari data yang diisikan yaitu sebuah text dengan penamaan nama dan ditampung oleh parameter $nama untuk di update langsung ke database begitu seterusnya hingga baris tanggal lahir
+</tr>
+<tr> 
+<td>Gender</td>
+<td><input type="text" name="jkel" value=<?php echo $jkel;?>></td>
+</tr>
+<tr> 
+<td>alamat</td>
+<td><input type="text" name="alamat" value=<?php echo $alamat;?>></td>
+</tr>
+<tr> 
+<td>Tgl Lahir</td>
+<td><input type="text" name="tgllhr" value=<?php echo $tgllhr;?>></td>
+</tr>
+<tr>
+<td><input type="hidden" name="nim" value=<?php echo $_GET['nim'];?>></td>
+<td><input type="submit" name="update" value="Update"></td> // untuk mengirim data yang telah di inputkan tadi sesuai dengan nim yang dipilih pada fungsi $_GET['nim'];
+</tr>
+</table>
+</form>
+</body>
+</html>
+
+
+
+
+
+
+Delete.php
+<?php
+include_once("koneksi.php"); // menghubungkan ke database
+$nim = $_GET['nim']; // mengambil data nim yang dipilih untuk dihapus
+$result = mysqli_query($con, "DELETE FROM mahasiswa WHERE nim='$nim'"); // menghapus data di baris/kolom table berdasarkan nim yang dipilih
+header("Location:index.php"); // menghubungkan Kembali ke halama utama (index.php)
+?>
+
+
